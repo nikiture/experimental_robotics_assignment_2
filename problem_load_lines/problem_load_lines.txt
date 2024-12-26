@@ -1,0 +1,27 @@
+set instance rob robot 
+
+set instance m1 marker
+set instance m2 marker
+set instance m3 marker
+set instance m4 marker
+
+set instance l1 location
+set instance l2 location
+set instance l3 location
+set instance l4 location
+set instance init_l location
+
+set predicate (robot_on rob init_l)
+
+set predicate (marker_on m1 l1)
+set predicate (marker_on m2 l2)
+set predicate (marker_on m3 l3)
+set predicate (marker_on m4 l4)
+
+set predicate (unknown_ID m1)
+set predicate (unknown_ID m2)
+set predicate (unknown_ID m3)
+set predicate (unknown_ID m4)
+
+
+set goal (and(at_min_id_marker rob))
