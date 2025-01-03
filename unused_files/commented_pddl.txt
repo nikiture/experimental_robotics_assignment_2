@@ -1,0 +1,98 @@
+;define actions here
+;(:durative-action robot_move
+;    :parameters (?rob - robot ?from - location ?to - location)
+;    :duration (< ?duration 30)
+;    :condition (and 
+;        (robot_on ?rob ?from)
+;    )
+;    :effect (and 
+;        (at start not(robot_on ?robot ?from))   
+;        (at end (robot_on ?robot ?to))
+;    )
+;)
+
+(forall (?m - marker)  (and (known_ID ?m) (has_marker ?ms ?m)))
+(forall (?m - marker) (when(has_marker ?ms ?m))  (known_ID ?m))
+
+
+or
+        (has_minimum_id ?m1)
+        (has_minimum_id ?m2)
+        (has_minimum_id ?m3)
+        (has_minimum_id ?m4)
+
+
+
+
+
+
+(:goal (and
+    ;todo: put the goal condition here
+    ;loc - location
+    (location loc)
+    (robot_on rob fin_loc)
+    (marker_on mark fin_loc)
+    (marker_min_id mark)
+    
+    
+))
+
+(exists (?m - marker) 
+            (and
+                (has_marker ?ms ?m) 
+                (mark_min_id ?m)
+
+            )
+
+        )
+
+        (and
+    (known_ID m1)
+    (known_ID m2)
+    (known_ID m3)
+    (known_ID m4)
+    (location loc)
+    (robot_on rob fin_loc)
+    (marker_on mark fin_loc)
+    (marker_min_id mark)
+    
+    
+)
+
+
+(:action robot_move
+    :parameters (?rob - robot ?from - location ?to - location)
+    :precondition (and 
+        (robot_on ?rob ?from)
+    )
+    :effect (and 
+        (not(robot_on ?rob ?from))   
+        (robot_on ?rob ?to)
+    )
+)
+
+(:action search_marker_id
+    :parameters (?robot - robot ?marker - marker ?loc - location)
+    :precondition (and
+        (robot_on ?robot ?loc)
+        (marker_on ?marker ?loc)
+        (unknown_ID ?marker)
+        ;(not (known_ID ?marker))
+    )
+    :effect (and 
+        (known_ID ?marker)
+        (not (unknown_ID ?marker))
+        ;(marker_known_id ?marker)
+    )
+)
+
+(:action reach_min_id_marker
+    :parameters (?rob - robot)
+    :precondition (and 
+        (forall (?m - marker)  (and (known_ID ?m)))
+        ;(not (at_min_id_marker ?rob))
+    )
+    :effect (and
+        (at_min_id_marker ?rob)
+    )
+)

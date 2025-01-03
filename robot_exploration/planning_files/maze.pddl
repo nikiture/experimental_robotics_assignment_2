@@ -3,7 +3,7 @@
 (define (domain maze)
 
 ;remove requirements that are not needed
-(:requirements :strips :typing :conditional-effects :negative-preconditions :equality :universal-preconditions)
+(:requirements :strips :typing :conditional-effects :negative-preconditions :equality :universal-preconditions :durative-actions)
 
 (:types 
     robot
@@ -36,43 +36,76 @@
     
 )
 
-
-
-(:action robot_move
+(:durative-action robot_move
     :parameters (?rob - robot ?from - location ?to - location)
-    :precondition (and 
-        (robot_on ?rob ?from)
+    :duration (= ?duration 1)
+    :condition (and 
+        (at start (and 
+            (robot_on ?rob ?from)
+        ))
     )
     :effect (and 
-        (not(robot_on ?rob ?from))   
-        (robot_on ?rob ?to)
+        (at start (and 
+            (not(robot_on ?rob ?from))  
+        ))
+        (at end (and 
+            (robot_on ?rob ?to)
+        ))
     )
 )
 
-(:action search_marker_id
+
+
+
+
+(:durative-action search_marker_id
     :parameters (?robot - robot ?marker - marker ?loc - location)
-    :precondition (and
-        (robot_on ?robot ?loc)
-        (marker_on ?marker ?loc)
-        (unknown_ID ?marker)
-        ;(not (known_ID ?marker))
+    :duration (= ?duration 1)
+    :condition (and 
+        (at start (and 
+            (robot_on ?robot ?loc)
+            (marker_on ?marker ?loc)
+            (unknown_ID ?marker)
+        ))
     )
     :effect (and 
-        (known_ID ?marker)
-        (not (unknown_ID ?marker))
-        ;(marker_known_id ?marker)
+        (at start (and
+            (not (unknown_ID ?marker)) 
+        ))
+        (at end (and 
+            (known_ID ?marker)
+        ))
     )
 )
-(:action reach_min_id_marker
-    :parameters (?rob - robot)
-    :precondition (and 
-        (forall (?m - marker)  (and (known_ID ?m)))
-        ;(not (at_min_id_marker ?rob))
+
+
+
+
+(:durative-action reach_min_id_marker
+    :parameters (?rob - robot ?m1 -marker ?m2 - marker ?m3 - marker ?m4 - marker)
+    :duration (= ?duration 1)
+    :condition (and 
+        (at start (and 
+            (forall (?m - marker)  (and (known_ID ?m)))
+            (known_ID ?m1)
+            (known_ID ?m2)
+            (known_ID ?m3)
+            (known_ID ?m4)
+            ;(not (= ?m1 ?m2))
+            ;(not (= ?m1 ?m3))
+            ;(not (= ?m1 ?m4))
+            ;(not (= ?m2 ?m3))
+            ;(not (= ?m2 ?m4))
+            ;(not (= ?m3 ?m4))
+        ))
     )
-    :effect (and
-        (at_min_id_marker ?rob)
+    :effect (and 
+        (at end (and 
+            (at_min_id_marker ?rob)
+        ))
     )
 )
+
 ;(:action find_minimum_ID
 ;    :parameters (?ms - marker_set ?m1 ?m2 ?m3 ?m4 - marker)
 ;    :precondition (and 

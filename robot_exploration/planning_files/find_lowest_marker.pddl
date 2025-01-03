@@ -25,10 +25,7 @@
 )
 
 (:goal (and
-    (known_ID m1)
-    (known_ID m2)
-    (known_ID m3)
-    (known_ID m4)
+    ;(when (forall (?m - marker) (not(and (known_ID ?m)))) (not(at_min_id_marker rob)))
     (at_min_id_marker rob)
 ) 
 

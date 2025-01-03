@@ -44,6 +44,21 @@ def generate_launch_description():
         }.items()
     )
     
+    move_action_node = Node (
+        package = 'navigation_actions',
+        executable = 'move_action',
+    )
+    
+    search_marker_server = Node(
+        package = 'search_marker_server',
+        executable = 'search_marker_server'
+    )
+    
+    search_marker_action = Node (
+        package = 'navigation_actions',
+        executable = 'search_action'
+    )
+    
     problem_file_adder = ExecuteProcess(
         cmd=[[
             #FindExecutable(name='ros2'),
@@ -66,4 +81,7 @@ def generate_launch_description():
         plansys2_launcher,
         #problem_file_adder,
         #problem_file_loader,
+        move_action_node,
+        search_marker_server,
+        search_marker_action,
     ])

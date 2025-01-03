@@ -42,7 +42,7 @@ marker_circler = Node (
 def generate_launch_description():
     
     test_robot_description_share = FindPackageShare(package='robot_exploration').find('robot_exploration')
-    default_model_path = os.path.join(test_robot_description_share, 'urdf/robot_assignment.xacro')
+    default_model_path = os.path.join(test_robot_description_share, 'urdf/robot5.xacro')
     default_world_path = os.path.join(test_robot_description_share, 'worlds/assignment_2.world')
     rviz_config_path = os.path.join(test_robot_description_share, 'config/rviz.rviz')
     planning_files_path = os.path.join(test_robot_description_share, 'planning_files')
@@ -155,7 +155,7 @@ def generate_launch_description():
         robot_state_publisher_node,
         joint_state_publisher_node,
         spawn_entity,
-        plansys2_launcher,
+        #plansys2_launcher,
         
         #camera_controller,
         ExecuteProcess(

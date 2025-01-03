@@ -1,0 +1,3 @@
+---
+bool found_marker
+int64 marker_id
