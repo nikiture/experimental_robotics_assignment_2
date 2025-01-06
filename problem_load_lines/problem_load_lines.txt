@@ -18,10 +18,10 @@ set predicate (marker_on m2 l2)
 set predicate (marker_on m3 l3)
 set predicate (marker_on m4 l4)
 
-set predicate (unknown_ID m1)
-set predicate (unknown_ID m2)
-set predicate (unknown_ID m3)
-set predicate (unknown_ID m4)
+set predicate (unknown_id m1)
+set predicate (unknown_id m2)
+set predicate (unknown_id m3)
+set predicate (unknown_id m4)
 
 
 set goal (and(at_min_id_marker rob))

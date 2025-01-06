@@ -1,3 +1,4 @@
+geometry_msgs/PoseStamped curr_pos
 ---
 bool found_marker
 int64 marker_id

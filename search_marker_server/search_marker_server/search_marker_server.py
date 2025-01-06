@@ -11,10 +11,10 @@ from rclpy.qos import qos_profile_sensor_data
 from ros2_aruco import transformations
 #from sensor_msgs.msg import CameraInfo
 #from sensor_msgs.msg import Image
-from geometry_msgs.msg import PoseArray, Pose
+from geometry_msgs.msg import PoseArray, Pose, Twist
 from ros2_aruco_interfaces.msg import ArucoMarkers
 from math import floor
-from marker_search_interface.srv import MarkerRequest
+from marker_search_interface.srv import MarkerRequest, MinIdMarker
 
 
 class marker_searcher (rclpy.node.Node):
@@ -66,7 +66,12 @@ class marker_searcher (rclpy.node.Node):
                                  self.image_callback,
                                  qos_profile_sensor_data)
         
+        self.rot_pub = self.create_publisher(Twist, '/cmd_vel', 5)
+        self.rot_command = Twist()
+        
         self.search_serv = self.create_service (MarkerRequest, 'marker_search_request', self.search_callback)
+        
+        self.min_id_serv = self.create_service (MinIdMarker, 'min_id_location', self.min_id_callback)
         
         self.aruco_dictionary = cv2.aruco.Dictionary_get(dictionary_id)
         self.aruco_parameters = cv2.aruco.DetectorParameters_create()
@@ -77,6 +82,8 @@ class marker_searcher (rclpy.node.Node):
         self.curr_image = None
         self.image_to_pub = None
         self.image_encoding = None
+        
+        self.identified_markers = dict()
         
         
     def info_callback(self, info_msg):
@@ -115,9 +122,21 @@ class marker_searcher (rclpy.node.Node):
             
         response.found_marker = marker_ids is not None
         if response.found_marker:
-            print (marker_ids [0][0])
-            response.marker_id = int(marker_ids[0][0])
+            mark_id = int(marker_ids[0][0])
+            #print (marker_ids [0][0])
+            response.marker_id = mark_id
+            self.rot_command.angular.z = 0.0
+            self.identified_markers[mark_id] = request
+            
+        else:
+            self.rot_command.angular.z = 0.1
         
+        self.rot_pub.publish(self.rot_command)
+        return response
+    
+    def min_id_callback(self, request, response):
+        #get first value in dictionary (which should be sorted)
+        response.position = next(iter(self.identified_markers.values()))
         return response
     
     

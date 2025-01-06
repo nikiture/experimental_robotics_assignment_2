@@ -125,7 +125,7 @@ class robot_move_node:public plansys2::ActionExecutorClient {
         rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
         on_activate(const rclcpp_lifecycle::State & previous_state) {
             send_feedback(0.0, "Move starting");
-
+            progress = 0;
             navigation_action_client =
             rclcpp_action::create_client<nav2_msgs::action::NavigateToPose>(
                 shared_from_this(),
@@ -153,8 +153,13 @@ class robot_move_node:public plansys2::ActionExecutorClient {
             rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SendGoalOptions(); */
 
             send_goal_options.feedback_callback = [this](
-            NavigationGoalHandle::SharedPtr,
+            NavigationGoalHandle::SharedPtr handle,
             NavigationFeedback feedback) {
+                progress = 1.0 - feedback->distance_remaining / dist_to_move;
+                /* if (progress > 0.96) {
+                    navigation_action_client->async_cancel_goal(handle)
+                    finish(true, 1.0, "Move completed");
+                } */
                 send_feedback(
                 std::min(1.0, std::max(0.0, 1.0 - (feedback->distance_remaining / dist_to_move))),
                 "Move running");
@@ -190,6 +195,10 @@ class robot_move_node:public plansys2::ActionExecutorClient {
                 finish(true, 1.0, "Move completed");
                 break;
             case rclcpp_action::ResultCode::ABORTED:
+                if (progress > 0.97) {
+                    finish(true, 1.0, "Move completed");
+                    return;
+                }
                 RCLCPP_ERROR(this->get_logger(), "action aborted, retrying to send it");
                 future_navigation_goal_handle =
                     navigation_action_client->async_send_goal(navigation_goal, send_goal_options);
@@ -205,7 +214,7 @@ class robot_move_node:public plansys2::ActionExecutorClient {
                 return;
             }
         }
-    
+        double progress;
         rclcpp_action::Client<nav2_msgs::action::NavigateToPose>::SendGoalOptions send_goal_options;
         std::string robot_frame;
         std::string map_frame;

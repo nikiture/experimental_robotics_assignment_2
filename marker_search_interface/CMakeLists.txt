@@ -21,12 +21,14 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package (geometry_msgs REQUIRED)
 
 
 
 rosidl_generate_interfaces (${PROJECT_NAME}
   "srv/MarkerRequest.srv"
-  DEPENDENCIES
+  "srv/MinIdMarker.srv"
+  DEPENDENCIES geometry_msgs
 )
 
 if(BUILD_TESTING)

@@ -14,10 +14,10 @@
     (marker_on m2 l2)
     (marker_on m3 l3)
     (marker_on m4 l4)
-    (unknown_ID m1)
-    (unknown_ID m2)
-    (unknown_ID m3)
-    (unknown_ID m4)
+    (unknown_id m1)
+    (unknown_id m2)
+    (unknown_id m3)
+    (unknown_id m4)
     
     
 
@@ -25,7 +25,7 @@
 )
 
 (:goal (and
-    ;(when (forall (?m - marker) (not(and (known_ID ?m)))) (not(at_min_id_marker rob)))
+    ;(when (forall (?m - marker) (not(and (known_id ?m)))) (not(at_min_id_marker rob)))
     (at_min_id_marker rob)
 ) 
 

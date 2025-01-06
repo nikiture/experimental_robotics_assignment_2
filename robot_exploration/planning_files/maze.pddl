@@ -21,8 +21,8 @@
 (:predicates 
     (robot_on ?rob - robot ?loc - location)
     (marker_on ?marker - marker ?location - location)
-    (known_ID ?marker - marker)
-    (unknown_ID ?mark - marker)
+    (known_id ?marker - marker)
+    (unknown_id ?mark - marker)
     ;(has_minimum_id ?mark - marker)
     ;(has_marker ?ms - marker_set ?m - marker)
     ;(same_location ?rob - robot ?m - marker)
@@ -65,15 +65,16 @@
         (at start (and 
             (robot_on ?robot ?loc)
             (marker_on ?marker ?loc)
-            (unknown_ID ?marker)
+            (unknown_id ?marker)
         ))
     )
     :effect (and 
-        (at start (and
-            (not (unknown_ID ?marker)) 
-        ))
+        ;(at start (and
+             
+        ;))
         (at end (and 
-            (known_ID ?marker)
+            (known_id ?marker)
+            (not (unknown_id ?marker))
         ))
     )
 )
@@ -86,11 +87,11 @@
     :duration (= ?duration 1)
     :condition (and 
         (at start (and 
-            (forall (?m - marker)  (and (known_ID ?m)))
-            (known_ID ?m1)
-            (known_ID ?m2)
-            (known_ID ?m3)
-            (known_ID ?m4)
+            (forall (?m - marker)  (and (known_id ?m)))
+            (known_id ?m1)
+            (known_id ?m2)
+            (known_id ?m3)
+            (known_id ?m4)
             ;(not (= ?m1 ?m2))
             ;(not (= ?m1 ?m3))
             ;(not (= ?m1 ?m4))
@@ -106,17 +107,17 @@
     )
 )
 
-;(:action find_minimum_ID
+;(:action find_minimum_id
 ;    :parameters (?ms - marker_set ?m1 ?m2 ?m3 ?m4 - marker)
 ;    :precondition (and 
-;        ;(forall (?m - marker)  (and (known_ID ?m) (has_marker ?ms ?m)))
-;        (known_ID ?m1)
-;        (known_ID ?m2)
-;        (known_ID ?m3)
-;        (known_ID ?m4)
+;        ;(forall (?m - marker)  (and (known_id ?m) (has_marker ?ms ?m)))
+;        (known_id ?m1)
+;        (known_id ?m2)
+;        (known_id ?m3)
+;        (known_id ?m4)
 ;    )
 ;    :effect (or
-;        ;forall (?m - marker) (or (known_ID ?m))
+;        ;forall (?m - marker) (or (known_id ?m))
 ;        (has_minimum_id ?m1)
 ;        (has_minimum_id ?m2)
 ;        (has_minimum_id ?m3)

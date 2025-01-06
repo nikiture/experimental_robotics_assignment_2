@@ -27,16 +27,20 @@ find_package(marker_search_interface REQUIRED)
 
 add_executable(move_action src/robot_move_node.cpp)
 add_executable(search_action src/search_marker_action.cpp)
+add_executable(reach_min_action src/reach_min_id_action.cpp)
 
 
 ament_target_dependencies (move_action rclcpp nav2_msgs geometry_msgs tf2 tf2_ros plansys2_executor)
-ament_target_dependencies(search_action rclcpp marker_search_interface plansys2_executor)
+ament_target_dependencies(search_action rclcpp marker_search_interface plansys2_executor geometry_msgs)
+ament_target_dependencies(reach_min_action rclcpp marker_search_interface plansys2_executor geometry_msgs tf2 tf2_ros nav2_msgs)
+
 
 
 
 install(TARGETS
   move_action
   search_action
+  reach_min_action
 
   DESTINATION lib/${PROJECT_NAME}/
 )
