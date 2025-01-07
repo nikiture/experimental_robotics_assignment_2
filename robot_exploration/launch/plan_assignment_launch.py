@@ -58,6 +58,10 @@ def generate_launch_description():
         package = 'navigation_actions',
         executable = 'search_action'
     )
+    reach_min_action = Node (
+        package = 'navigation_actions',
+        executable = 'reach_min_action'
+    )
     
     problem_file_adder = ExecuteProcess(
         cmd=[[

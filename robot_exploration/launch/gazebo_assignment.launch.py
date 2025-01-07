@@ -55,10 +55,10 @@ def generate_launch_description():
         FindPackageShare (package = 'slam_toolbox').find('slam_toolbox'),
         'launch'
     ) """
-    nav_launch = os.path.join (
+    """ nav_launch = os.path.join (
         FindPackageShare(package = 'nav2_bringup').find('nav2_bringup'),
         'launch'
-    )
+    ) """
     slam_config = os.path.join(test_robot_description_share, 'config', 'slam_config.yaml')
     nav_config = os.path.join(test_robot_description_share, 'config', 'nav2_params.yaml')
     #aruco_detector = FindPackageShare (package = 'ros2_aruco').find ('ros2_aruco')
@@ -75,16 +75,6 @@ def generate_launch_description():
         name='joint_state_publisher'
     )
     
-    camera_controller = Node(
-	package="controller_manager",
-	executable="spawner.py",
-	arguments=["joint_camera_controller"],
-    )
-    
-    aruco_detector = Node (
-    package = 'ros2_aruco',
-    executable = 'aruco_node',
-    )
     
     """ plansys = Node (
        package = 'plansys2_bringup',
@@ -142,6 +132,25 @@ def generate_launch_description():
         }.items()
     )
     
+    move_action_node = Node (
+        package = 'navigation_actions',
+        executable = 'move_action',
+    )
+    
+    search_marker_server = Node(
+        package = 'search_marker_server',
+        executable = 'search_marker_server'
+    )
+    
+    search_marker_action = Node (
+        package = 'navigation_actions',
+        executable = 'search_action'
+    )
+    reach_min_action = Node (
+        package = 'navigation_actions',
+        executable = 'reach_min_action'
+    )
+    
     # GAZEBO_MODEL_PATH has to be correctly set for Gazebo to be able to find the model
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-entity', 'my_test_robot', '-topic', '/robot_description', '-y', '1.0'],
@@ -164,6 +173,14 @@ def generate_launch_description():
         ExecuteProcess(
             cmd=['rviz2', '-d', rviz_config_path],
             output='screen'),
+        
+        nav_launcher,
+        slam_launcher,
+        plansys2_launcher,
+        move_action_node,
+        search_marker_action,
+        search_marker_server,
+        reach_min_action,
         
         
         #aruco_detector,
