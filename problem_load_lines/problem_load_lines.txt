@@ -24,7 +24,7 @@ set predicate (unknown_id m3)
 set predicate (unknown_id m4)
 
 
-set goal (and(at_min_id_marker rob))
+set goal (and(at_min_id_marker rob) (known_id m1) (known_id m2) (known_id m3) (known_id m4))
 
 set goal (and(known_id m1))
 set goal (and(known_id m2))
@@ -34,3 +34,5 @@ set goal (and(known_id m4))
 set goal (and (known_id m1) (known_id m2) (known_id m3) (known_id m4))
 
 set goal (and(robot_on rob l2))
+
+set goal (and(at_min_id_marker rob))

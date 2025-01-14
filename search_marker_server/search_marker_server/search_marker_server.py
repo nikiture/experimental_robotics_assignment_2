@@ -1,21 +1,19 @@
 import rclpy
 import rclpy.node
 from cv_bridge import CvBridge
-#import pkg_resources
-#pkg_resources.require('Cv2<4.7')
 import cv2
 from sensor_msgs.msg import CameraInfo
 from sensor_msgs.msg import Image
-from geometry_msgs.msg import PoseArray, Pose
+#from geometry_msgs.msg import PoseArray, Pose
 #from std_msgs.msg import Empty, Header
 import numpy as np
 from rclpy.qos import qos_profile_sensor_data
-from ros2_aruco import transformations
+#from ros2_aruco import transformations
 #from sensor_msgs.msg import CameraInfo
 #from sensor_msgs.msg import Image
-from geometry_msgs.msg import PoseArray, Pose, Twist
-from ros2_aruco_interfaces.msg import ArucoMarkers
-from math import floor
+from geometry_msgs.msg import Pose, Twist, PoseStamped
+#from ros2_aruco_interfaces.msg import ArucoMarkers
+#from math import floor
 from marker_search_interface.srv import MarkerRequest, MinIdMarker
 
 
@@ -75,10 +73,14 @@ class marker_searcher (rclpy.node.Node):
         
         self.min_id_serv = self.create_service (MinIdMarker, 'min_id_location', self.min_id_callback)
         
-        #self.aruco_dictionary = cv2.aruco.Dictionary_get(dictionary_id)
-        #self.aruco_parameters = cv2.aruco.DetectorParameters_create()
-        self.aruco_dictionary = cv2.aruco.getPredefinedDictionary(dictionary_id)
-        self.aruco_parameters = cv2.aruco.DetectorParameters()
+        #uncomment these lines if cv2 version before 4.7
+        self.aruco_dictionary = cv2.aruco.Dictionary_get(dictionary_id)
+        self.aruco_parameters = cv2.aruco.DetectorParameters_create()
+        #uncomment these two lines if cv2 version after 4.7
+        #self.aruco_dictionary = cv2.aruco.getPredefinedDictionary(dictionary_id)
+        #self.aruco_parameters = cv2.aruco.DetectorParameters()
+        
+        
         self.bridge = CvBridge()
         self.info_msg = None
         self.intrinsic_mat = None
@@ -132,7 +134,7 @@ class marker_searcher (rclpy.node.Node):
             #self.get_logger().info(type(request))
             response.marker_id = mark_id
             self.rot_command.angular.z = 0.0
-            self.identified_markers[mark_id] = request.cuur_pos
+            self.identified_markers[mark_id] = request.curr_pos
             
         else:
             self.rot_command.angular.z = 0.5

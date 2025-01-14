@@ -87,6 +87,7 @@
     :duration (= ?duration 1)
     :condition (and 
         (at start (and 
+        	;Note: plansys2 for foxy does not support forall or equals (or at least this is stated on my docker image) but are needed for this action to be executed at the correct step of the plan 
             ;(forall (?m - marker)  (and (known_id ?m)))
             (known_id ?m1)
             (known_id ?m2)
