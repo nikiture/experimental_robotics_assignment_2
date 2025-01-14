@@ -109,9 +109,9 @@ class search_marker_action : public plansys2::ActionExecutorClient {
                 auto res = future.get();
                 if (res->found_marker) {
                     RCLCPP_INFO(this->get_logger(), "found marker %d", res->marker_id);
-                    rotation_command.angular.z = 0.0;
-                    rotation_client->publish(rotation_command);
-                    timer->reset();
+                    //rotation_command.angular.z = 0.0;
+                    //rotation_client->publish(rotation_command);
+                    //timer->reset();
                     finish(true, 1.0, "Search completed");
                 } else {
                     /* rotation_command.angular.z = 0.1;

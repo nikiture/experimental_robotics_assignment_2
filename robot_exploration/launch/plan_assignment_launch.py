@@ -88,4 +88,5 @@ def generate_launch_description():
         move_action_node,
         search_marker_server,
         search_marker_action,
+        reach_min_action,
     ])

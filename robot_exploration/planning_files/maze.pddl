@@ -87,7 +87,7 @@
     :duration (= ?duration 1)
     :condition (and 
         (at start (and 
-            (forall (?m - marker)  (and (known_id ?m)))
+            ;(forall (?m - marker)  (and (known_id ?m)))
             (known_id ?m1)
             (known_id ?m2)
             (known_id ?m3)

@@ -1,6 +1,8 @@
 import rclpy
 import rclpy.node
 from cv_bridge import CvBridge
+#import pkg_resources
+#pkg_resources.require('Cv2<4.7')
 import cv2
 from sensor_msgs.msg import CameraInfo
 from sensor_msgs.msg import Image
@@ -73,8 +75,10 @@ class marker_searcher (rclpy.node.Node):
         
         self.min_id_serv = self.create_service (MinIdMarker, 'min_id_location', self.min_id_callback)
         
-        self.aruco_dictionary = cv2.aruco.Dictionary_get(dictionary_id)
-        self.aruco_parameters = cv2.aruco.DetectorParameters_create()
+        #self.aruco_dictionary = cv2.aruco.Dictionary_get(dictionary_id)
+        #self.aruco_parameters = cv2.aruco.DetectorParameters_create()
+        self.aruco_dictionary = cv2.aruco.getPredefinedDictionary(dictionary_id)
+        self.aruco_parameters = cv2.aruco.DetectorParameters()
         self.bridge = CvBridge()
         self.info_msg = None
         self.intrinsic_mat = None
@@ -124,17 +128,20 @@ class marker_searcher (rclpy.node.Node):
         if response.found_marker:
             mark_id = int(marker_ids[0][0])
             #print (marker_ids [0][0])
+            #print(request)
+            #self.get_logger().info(type(request))
             response.marker_id = mark_id
             self.rot_command.angular.z = 0.0
-            self.identified_markers[mark_id] = request
+            self.identified_markers[mark_id] = request.cuur_pos
             
         else:
-            self.rot_command.angular.z = 0.1
+            self.rot_command.angular.z = 0.5
         
         self.rot_pub.publish(self.rot_command)
         return response
     
     def min_id_callback(self, request, response):
+        print(response)
         #get first value in dictionary (which should be sorted)
         response.position = next(iter(self.identified_markers.values()))
         return response

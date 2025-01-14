@@ -156,13 +156,14 @@ class robot_move_node:public plansys2::ActionExecutorClient {
             NavigationGoalHandle::SharedPtr handle,
             NavigationFeedback feedback) {
                 progress = 1.0 - feedback->distance_remaining / dist_to_move;
-                /* if (progress > 0.96) {
-                    navigation_action_client->async_cancel_goal(handle)
+                if (progress > 0.96) {
+                    navigation_action_client->async_cancel_goal(handle);
                     finish(true, 1.0, "Move completed");
-                } */
+                } else {
                 send_feedback(
-                std::min(1.0, std::max(0.0, 1.0 - (feedback->distance_remaining / dist_to_move))),
-                "Move running");
+		        std::min(1.0, std::max(0.0, 1.0 - (feedback->distance_remaining / dist_to_move))),
+		        "Move running");
+                }
             };
 
             /* send_goal_options.result_callback = [this](auto) {

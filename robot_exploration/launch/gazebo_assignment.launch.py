@@ -176,11 +176,11 @@ def generate_launch_description():
         
         nav_launcher,
         slam_launcher,
-        plansys2_launcher,
-        move_action_node,
-        search_marker_action,
-        search_marker_server,
-        reach_min_action,
+        #plansys2_launcher,
+        #move_action_node,
+        #search_marker_action,
+        #search_marker_server,
+        #reach_min_action,
         
         
         #aruco_detector,
